@@ -6,7 +6,7 @@ public class PaddleController : MonoBehaviour
 {
 
     Rigidbody rb;
-    public float speed = 7f;
+    public float speed = 15f;
     float increaseBallFactor = 5f;
     // Start is called before the first frame update
     void Start()

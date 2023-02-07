@@ -16,18 +16,18 @@ public class BallPhysics : MonoBehaviour
     private Renderer ballRender;
     private float red, green, blue;
     private Color ballColor; 
+    
 
     public TextMeshProUGUI LScore;
     public TextMeshProUGUI RScore;
-
+    
 
     
 
     // Start is called before the first frame update
     void Start()
     {
-        
-         
+        StartCoroutine(Waiter());
         SetScoreText();
         rb = GetComponent<Rigidbody>();
         ballRender = rb.GetComponent<Renderer>();
@@ -35,6 +35,10 @@ public class BallPhysics : MonoBehaviour
 
     }
 
+    IEnumerator Waiter()
+    {
+        yield return new WaitForSeconds(1);
+    }
 
     private void OnTriggerEnter(Collider o)
     {
@@ -42,6 +46,7 @@ public class BallPhysics : MonoBehaviour
         {
             RightPlayerScore++;
             Debug.Log($" Right Player Scored! Score is: {LeftPlayerScore} | {RightPlayerScore}");
+            gameObject.GetComponent<TrailRenderer>().enabled = false;
             resetRound(2);
         }
 
@@ -49,6 +54,7 @@ public class BallPhysics : MonoBehaviour
         {
             LeftPlayerScore++;
             Debug.Log($" Left Player Scored! Score is: {LeftPlayerScore} | {RightPlayerScore}");
+            rb.gameObject.GetComponent<TrailRenderer>().enabled = false;
             resetRound(1);
         }
 
@@ -91,8 +97,10 @@ public class BallPhysics : MonoBehaviour
         leftPaddle.GetComponent<Rigidbody>().position = new Vector3(-8, 0, 1);
         rightPaddle.GetComponent<Rigidbody>().position = new Vector3(-8, 0, 1);
 
+        StartCoroutine(Waiter());
+        rb.gameObject.GetComponent<TrailRenderer>().enabled = true;
 
-        if(decider == 2) rb.velocity = Vector3.left * speed;
+        if (decider == 2) rb.velocity = Vector3.left * speed;
         else rb.velocity = Vector3.right * speed;
     }
 
@@ -101,7 +109,8 @@ public class BallPhysics : MonoBehaviour
     {
         RightPlayerScore = 0;
         LeftPlayerScore = 0;
-        
+        StartCoroutine(Waiter());
+
     }
 
     private void SetScoreText()
@@ -135,5 +144,6 @@ public class BallPhysics : MonoBehaviour
         ballRender.material.SetColor("_Color", ballColor);
     }
 
+    
 
 }
