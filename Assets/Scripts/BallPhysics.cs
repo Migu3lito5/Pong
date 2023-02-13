@@ -21,6 +21,8 @@ public class BallPhysics : MonoBehaviour
     public TextMeshProUGUI LScore;
     public TextMeshProUGUI RScore;
 
+    public AudioManager AudioManager;
+
 
 
 
@@ -31,7 +33,9 @@ public class BallPhysics : MonoBehaviour
         SetScoreText();
         rb = GetComponent<Rigidbody>();
         ballRender = rb.GetComponent<Renderer>();
+        AudioManager.GetComponent<AudioManager>();
         rb.velocity = Vector3.left * speed;
+        
 
     }
 
@@ -42,11 +46,13 @@ public class BallPhysics : MonoBehaviour
 
     private void OnTriggerEnter(Collider o)
     {
+        
         if (o.gameObject.CompareTag("LeftWall"))
         {
             RightPlayerScore++;
             Debug.Log($" Right Player Scored! Score is: {LeftPlayerScore} | {RightPlayerScore}");
             gameObject.GetComponent<TrailRenderer>().enabled = false;
+            AudioManager.Play("Scored");
             resetRound(2);
         }
 
@@ -54,6 +60,7 @@ public class BallPhysics : MonoBehaviour
         {
             LeftPlayerScore++;
             Debug.Log($" Left Player Scored! Score is: {LeftPlayerScore} | {RightPlayerScore}");
+            AudioManager.Play("Scored");
             rb.gameObject.GetComponent<TrailRenderer>().enabled = false;
             resetRound(1);
         }
@@ -71,6 +78,8 @@ public class BallPhysics : MonoBehaviour
             Bounds b = bc.bounds;
             float maxY = b.max.y;
             float minY = b.min.y;
+
+            AudioManager.Play("BounceSound");
 
             Quaternion rotation = Quaternion.Euler(0, 0, -60f);
             Vector3 bounceDirection = rotation * Vector3.left;
