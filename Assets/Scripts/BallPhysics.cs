@@ -15,14 +15,14 @@ public class BallPhysics : MonoBehaviour
 
     private Renderer ballRender;
     private float red, green, blue;
-    private Color ballColor; 
-    
+    private Color ballColor;
+
 
     public TextMeshProUGUI LScore;
     public TextMeshProUGUI RScore;
-    
 
-    
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +37,7 @@ public class BallPhysics : MonoBehaviour
 
     IEnumerator Waiter()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(4);
     }
 
     private void OnTriggerEnter(Collider o)
@@ -59,7 +59,7 @@ public class BallPhysics : MonoBehaviour
         }
 
         SetScoreText();
-        
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -80,9 +80,9 @@ public class BallPhysics : MonoBehaviour
                 bounceDirection = rotation * Vector3.right;
             }
 
-            changeColor();
+            changeBallColor();
             rb.AddForce(bounceDirection * 30f * speed++, ForceMode.Force);
-            
+
         }
     }
 
@@ -117,23 +117,71 @@ public class BallPhysics : MonoBehaviour
     {
         LScore.text = LeftPlayerScore.ToString();
         RScore.text = RightPlayerScore.ToString();
+        updateColorText();
 
-        if(RightPlayerScore == 11)
+        if (RightPlayerScore == 11)
         {
-            Debug.Log("Right Player Wins!");            
+            Debug.Log("Right Player Wins!");
             restartGame();
         }
 
-        if(LeftPlayerScore == 11)
+        if (LeftPlayerScore == 11)
         {
             Debug.Log("Left Player Wins!");
             restartGame();
         }
-       
+
 
     }
 
-    private void changeColor()
+    private void updateColorText()
+    {
+
+
+
+        if (RightPlayerScore > 1 && RightPlayerScore < 4)
+        {
+            RScore.color = Color.green;
+        }
+
+        if (LeftPlayerScore > 1 && LeftPlayerScore < 4)
+        {
+            LScore.color = Color.green;
+
+        }
+
+        if (RightPlayerScore > 4 && RightPlayerScore < 9)
+        {
+            RScore.color = Color.yellow;
+        }
+
+        if (LeftPlayerScore > 4 && LeftPlayerScore < 9)
+        {
+            LScore.color = Color.yellow;
+
+        }
+
+        if (RightPlayerScore > 9)
+        {
+            RScore.color = Color.red;
+        }
+
+        if (LeftPlayerScore > 9)
+        {
+            LScore.color = Color.red;
+
+        }
+
+        if(RightPlayerScore < 1 && LeftPlayerScore < 1)
+        {
+            LScore.color = Color.white;
+            RScore.color = Color.white;
+        }
+
+    }
+
+
+    private void changeBallColor()
     {
         red = Random.Range(0f, 1f);
         green = Random.Range(0f, 1f);
