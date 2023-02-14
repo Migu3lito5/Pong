@@ -7,7 +7,7 @@ public class BallPhysics : MonoBehaviour
 {
 
     Rigidbody rb;
-    float speed = 15f;
+    float speed = 20f;
     private int LeftPlayerScore = 0;
     private int RightPlayerScore = 0;
     private GameObject leftPaddle;
@@ -29,7 +29,7 @@ public class BallPhysics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Waiter());
+       
         SetScoreText();
         rb = GetComponent<Rigidbody>();
         ballRender = rb.GetComponent<Renderer>();
@@ -39,10 +39,7 @@ public class BallPhysics : MonoBehaviour
 
     }
 
-    IEnumerator Waiter()
-    {
-        yield return new WaitForSeconds(4);
-    }
+  
 
     private void OnTriggerEnter(Collider o)
     {
@@ -90,7 +87,7 @@ public class BallPhysics : MonoBehaviour
             }
 
             changeBallColor();
-            rb.AddForce(bounceDirection * 30f * speed++, ForceMode.Force);
+            rb.AddForce(bounceDirection * 25f * speed++, ForceMode.Force);
 
         }
     }
@@ -106,7 +103,6 @@ public class BallPhysics : MonoBehaviour
         leftPaddle.GetComponent<Rigidbody>().position = new Vector3(-8, 0, 1);
         rightPaddle.GetComponent<Rigidbody>().position = new Vector3(-8, 0, 1);
 
-        StartCoroutine(Waiter());
         rb.gameObject.GetComponent<TrailRenderer>().enabled = true;
 
         if (decider == 2) rb.velocity = Vector3.left * speed;
@@ -118,8 +114,7 @@ public class BallPhysics : MonoBehaviour
     {
         RightPlayerScore = 0;
         LeftPlayerScore = 0;
-        StartCoroutine(Waiter());
-
+       
     }
 
     private void SetScoreText()
